@@ -51,25 +51,24 @@ public class ServiceTests : IClassFixture<WebApplicationFactory<Program>>, IAsyn
     [Fact]
     public async Task CreateRequest_ReturnsOk_WithAuth()
     {
-        // 3. Для каждого теста, меняющего БД, создаем свой scope,
-        // чтобы изменения не влияли на другие тесты.
         using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        // Добавляем необходимые данные в БД перед тестом,
-        // если ваш контроллер требует их наличия (например, CarModel)
-        // dbContext.CarModels.Add(new CarModel { Id = 1, ModelName = "TestModel" });
-        // await dbContext.SaveChangesAsync();
+        // Подготавливаем заголовок авторизации
+        _client.DefaultRequestHeaders.Clear(); // Очищаем старые заголовки, если есть
+        _client.DefaultRequestHeaders.Add("Admin-Key", "MySecretKey123");
+    
+        // Испольуем ПРАВИЛЬНОЕ имя класса (RequestDto) и ПРАВИЛЬНЫЕ поля (CarName вместо CarModelId)
+        var testDto = new RequestDto {
+            CarName = "Toyota Camry",
+            StationId = 1,
+            IssueDescription = "Engine smoke"
+        };
 
         // Выполняем HTTP-запрос
-        _client.DefaultRequestHeaders.Add("Admin-Key", "MySecretKey123");
-        
-        var response = await _client.PostAsJsonAsync("/api/Requests", new CreateRequestDto {
-            CarModelId = 1,
-            ServiceStationId = 1,
-            IssueDescription = "Engine smoke"
-        });
+        var response = await _client.PostAsJsonAsync("/api/requests", testDto);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        // Проверяем результат (в контроллере CreatedAtAction возвращает 201 Created)
+        Assert.True(response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created);
     }
 }
