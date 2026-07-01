@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое Фронтенд Приложение</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Система управления заказами</h1>
+            <div id="auth-section">
+                <input type="password" id="api-key-input" placeholder="Введите Admin-Key">
+                <button id="auth-btn">Войти</button>
+            </div>
+            <div id="admin-controls" class="hidden">
+                <button id="add-btn" class="success-btn">+ Создать заказ</button>
+                <button id="logout-btn">Выйти</button>
+            </div>
+        </header>
+        
+        <!-- Основная рабочая область, скрытая по умолчанию -->
+        <main id="main-interface" class="hidden">
+            <section id="content"></section>
+        </main>
+
+        <!-- Модальное окно создания -->
+        <div id="modal" class="modal hidden">
+           <div class="modal-content">
+                <h2>Новая заявка</h2>
+                <form id="request-form">
+                    <label>Модель автомобиля:</label>
+                    <input type="text" id="car-model-name" placeholder="Напр: Lada Vesta" required><br>
+
+                    <label>Выберите СТО:</label>
+                    <select id="service-station-select" required>
+                        <option value="">Загрузка...</option>
+                    </select><br>
+
+                    <label>Описание проблемы:</label>
+                    <textarea id="issue-text" required></textarea> 
+                    <input type="hidden" id="request-id-input">
+
+                    <div class="modal-actions">
+                        <button type="submit" class="success-btn">Сохранить</button>
+                        <button type="button" id="close-modal-btn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="loader" class="hidden">Обработка...</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

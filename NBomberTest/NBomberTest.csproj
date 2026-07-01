@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework> <!-- Если стоит net9.0, смени на net8.0 или net6.0 для совместимости -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NBomber" Version="5.2.1" />
+    <PackageReference Include="NBomber.Http" Version="5.0.1" />
+  </ItemGroup>
+</Project>
